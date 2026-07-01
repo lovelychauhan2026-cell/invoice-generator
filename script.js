@@ -1,8 +1,10 @@
+
 let products = [];
 let invoiceNo = 1;
 
+// ADD PRODUCT
 function addProduct() {
-  const name = document.getElementById("productName").value;
+  const name = document.getElementById("productName").value.trim();
   const qty = Number(document.getElementById("productQty").value);
   const price = Number(document.getElementById("productPrice").value);
 
@@ -12,16 +14,25 @@ function addProduct() {
   }
 
   products.push({
-    name,
+    name: String(name),
     qty,
     price,
     total: qty * price
   });
 
+  clearInputs();
   render();
   calculate();
 }
 
+// CLEAR INPUTS
+function clearInputs(){
+  document.getElementById("productName").value = "";
+  document.getElementById("productQty").value = "";
+  document.getElementById("productPrice").value = "";
+}
+
+// RENDER TABLE
 function render() {
   const table = document.getElementById("productList");
   table.innerHTML = "";
@@ -39,14 +50,16 @@ function render() {
   });
 }
 
+// DELETE ITEM
 function deleteItem(i){
   products.splice(i,1);
   render();
   calculate();
 }
 
+// CALCULATION
 function calculate(){
-  let subtotal = products.reduce((a,b)=>a+b.total,0);
+  let subtotal = products.reduce((a,b)=>a + Number(b.total), 0);
   let gst = subtotal * 0.18;
   let total = subtotal + gst;
 
@@ -57,6 +70,7 @@ function calculate(){
   return {subtotal,gst,total};
 }
 
+// GENERATE PDF
 function generateInvoice(){
 
   if(products.length === 0){
@@ -74,8 +88,13 @@ function generateInvoice(){
   let subtotal = 0;
 
   const rows = products.map(p=>{
-    subtotal += p.total;
-    return [p.name, p.qty, p.price, p.total];
+    subtotal += Number(p.total);
+    return [
+      String(p.name),
+      String(p.qty),
+      String(p.price),
+      String(p.total)
+    ];
   });
 
   let gst = subtotal * 0.18;
@@ -115,19 +134,21 @@ function generateInvoice(){
   invoiceNo++;
 }
 
+// SAVE HISTORY
 function saveHistory(name,total){
   let history = JSON.parse(localStorage.getItem("history")) || [];
 
   history.push({
     name,
     total,
-    date:new Date().toLocaleString()
+    date: new Date().toLocaleString()
   });
 
-  localStorage.setItem("history",JSON.stringify(history));
+  localStorage.setItem("history", JSON.stringify(history));
   loadHistory();
 }
 
+// LOAD HISTORY
 function loadHistory(){
   let history = JSON.parse(localStorage.getItem("history")) || [];
   let list = document.getElementById("history");
@@ -135,7 +156,7 @@ function loadHistory(){
   list.innerHTML = "";
 
   history.forEach(h=>{
-    list.innerHTML += `<li>${h.name} - ₹${h.total} (${h.date})</li>`;
+    list.innerHTML += `<li>${h.name} - Rs ${h.total} (${h.date})</li>`;
   });
 }
 
