@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>ERP Invoice Pro</title>
+
+<link rel="stylesheet" href="style.css">
+
+<!-- jsPDF -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+<!-- AutoTable -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.31/jspdf.plugin.autotable.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">
+
+  <h1>PRO ERP BILLING SYSTEM</h1>
+
+  <div class="card">
+    <h3>GSTIN: 10BNAPK5138H1ZH</h3>
+  </div>
+
+  <!-- CUSTOMER -->
+  <div class="card">
+    <h2>Customer Details</h2>
+    <input id="customerName" placeholder="Customer Name">
+    <input id="customerPhone" placeholder="Phone">
+    <input id="customerAddress" placeholder="Address">
+  </div>
+
+  <!-- PRODUCT -->
+  <div class="card">
+    <h2>Add Product</h2>
+    <input id="productName" placeholder="Product Name">
+    <input id="productQty" type="number" placeholder="Qty">
+    <input id="productPrice" type="number" placeholder="Price">
+    <button onclick="addProduct()">Add</button>
+  </div>
+
+  <!-- TABLE -->
+  <div class="card">
+    <h2>Products</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Qty</th>
+          <th>Price</th>
+          <th>Total</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="productList"></tbody>
+    </table>
+  </div>
+
+  <!-- BILL -->
+  <div class="card">
+    <h2>Bill Summary</h2>
+    <p>Subtotal: ₹<span id="subtotal">0</span></p>
+    <p>GST (18%): ₹<span id="gst">0</span></p>
+    <h3>Total: ₹<span id="total">0</span></h3>
+
+    <button onclick="generateInvoice()">Generate PDF</button>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="card">
+    <h2>Invoice History</h2>
+    <ul id="history"></ul>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>
